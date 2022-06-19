@@ -27,6 +27,7 @@ class LittleFSLocalStorage{
 
     public:
         LittleFSLocalStorage();
+        ~LittleFSLocalStorage();
 
         // ------------------------------------------------
         // File Operations

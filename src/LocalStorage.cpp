@@ -12,6 +12,10 @@ LittleFSLocalStorage::LittleFSLocalStorage() : _FSReady{false}
     }
 }
 
+LittleFSLocalStorage::~LittleFSLocalStorage()
+{
+    LittleFS.end();
+}
 
 // ------------------------------------------------
 // File Operations
@@ -163,7 +167,7 @@ char** LittleFSLocalStorage::ls(const String &path)
     if (validDir(path))
     {
         Dir dir = openDir(path);
-        
+
         int i = 0;
         while (dir.next())
         {
