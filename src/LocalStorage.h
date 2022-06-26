@@ -4,6 +4,12 @@
 #include <Arduino.h>
 #include "LittleFS.h"
 
+// TODO: Make all functions static
+// TODO: Encourage usinig the static class instance. e.g. make the constructor private
+// TODO: Rename to LittleFSFileSystem
+// TODO: Create a FileSystem abstract class that implements the FileSystem interface
+// TODO: Create a ArduinoFileSystem class that can be used to create a FileSystem implementation.
+
 class LittleFSLocalStorage{
     private:
         bool _FSReady;
