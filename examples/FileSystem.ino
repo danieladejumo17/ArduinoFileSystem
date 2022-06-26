@@ -1,20 +1,19 @@
-#include <LocalStorage.h>
+#include <littlefs_filesystem.h>
 
 // ######################################
 // -------- ARDUINO FILE SYSTEM ---------
 // ######################################
 
-// TODO: Rename to ArduinoFileSystem
 void setup()
 {
     // start serial on port at 115200 baud and print to serial monitor
     Serial.begin(115200);
-    Serial.println("LocalStorage Example");
+    Serial.println("Arduino File System Example");
 
     // delay for 10 seconds
     delay(10000);
 
-    LittleFSLocalStorage fs;
+    LittleFSFileSystem fs;
 
     // WRITE TO A FILE
     // write "Hello Local Storage" to /test.txt. This will overwrite the file if it already exists.

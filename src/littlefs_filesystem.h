@@ -6,11 +6,10 @@
 
 // TODO: Make all functions static
 // TODO: Encourage usinig the static class instance. e.g. make the constructor private
-// TODO: Rename to LittleFSFileSystem
 // TODO: Create a FileSystem abstract class that implements the FileSystem interface
 // TODO: Create a ArduinoFileSystem class that can be used to create a FileSystem implementation.
 
-class LittleFSLocalStorage{
+class LittleFSFileSystem{
     private:
         bool _FSReady;
         static const int _writeDelay = 100;
@@ -24,8 +23,8 @@ class LittleFSLocalStorage{
         }
 
     public:
-        LittleFSLocalStorage();
-        ~LittleFSLocalStorage();
+        LittleFSFileSystem();
+        ~LittleFSFileSystem();
 
         // ------------------------------------------------
         // File Operations
@@ -139,6 +138,6 @@ class LittleFSLocalStorage{
         // bool lenDir(const String &path);
 };
 
-static LittleFSLocalStorage localStorage{};
+static LittleFSFileSystem little_fs{};
 
 #endif

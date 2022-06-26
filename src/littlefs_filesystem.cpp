@@ -1,8 +1,8 @@
-#include "LocalStorage.h"
+#include "littlefs_filesystem.h"
 #include "utilities.h"
 
 // TODO: IGNORE ALL OTHER FILE OPERATIONS IF !_FSReady
-LittleFSLocalStorage::LittleFSLocalStorage() : _FSReady{false}
+LittleFSFileSystem::LittleFSFileSystem() : _FSReady{false}
 {
     _FSReady = LittleFS.begin();
     if (!_FSReady)
@@ -12,7 +12,7 @@ LittleFSLocalStorage::LittleFSLocalStorage() : _FSReady{false}
     }
 }
 
-LittleFSLocalStorage::~LittleFSLocalStorage()
+LittleFSFileSystem::~LittleFSFileSystem()
 {
     LittleFS.end();
 }
@@ -21,12 +21,12 @@ LittleFSLocalStorage::~LittleFSLocalStorage()
 // File Operations
 // ------------------------------------------------
 
-File LittleFSLocalStorage::open(const String &path, const String &mode)
+File LittleFSFileSystem::open(const String &path, const String &mode)
 {
     return LittleFS.open(path.c_str(), mode.c_str());
 }
 
-String LittleFSLocalStorage::readFile(const String &path)
+String LittleFSFileSystem::readFile(const String &path)
 // call exists before calling this function to verify a file can be read
 {
     File file = open(path, "r");
@@ -45,7 +45,7 @@ String LittleFSLocalStorage::readFile(const String &path)
     }
 }
 
-bool LittleFSLocalStorage::writeFile(const String &path, const String &content)
+bool LittleFSFileSystem::writeFile(const String &path, const String &content)
 // TDOD: Add functionalitied to write binary data
 {
     File file = open(path, "w");
@@ -60,7 +60,7 @@ bool LittleFSLocalStorage::writeFile(const String &path, const String &content)
     return false;
 }
 
-bool LittleFSLocalStorage::appendToFile(const String &path, const String &content)
+bool LittleFSFileSystem::appendToFile(const String &path, const String &content)
 {
     File file = open(path, "a");
     if (file)
@@ -74,22 +74,22 @@ bool LittleFSLocalStorage::appendToFile(const String &path, const String &conten
     return false;
 }
 
-bool LittleFSLocalStorage::touch(const String &path)
+bool LittleFSFileSystem::touch(const String &path)
 {
     return writeFile(path, "");
 }
 
-bool LittleFSLocalStorage::remove(const String &path)
+bool LittleFSFileSystem::remove(const String &path)
 {
     return LittleFS.remove(path);
 }
 
-bool LittleFSLocalStorage::rename(const String &pathFrom, const String &pathTo)
+bool LittleFSFileSystem::rename(const String &pathFrom, const String &pathTo)
 {
     return LittleFS.rename(pathFrom, pathTo);
 }
 
-bool LittleFSLocalStorage::copyFile(const String &source, const String &dest)
+bool LittleFSFileSystem::copyFile(const String &source, const String &dest)
 // TODO: see if there is a better way to do this to work with binary files as well
 {
     return writeFile(dest, readFile(source));
@@ -100,7 +100,7 @@ bool LittleFSLocalStorage::copyFile(const String &source, const String &dest)
 // File and Directory Operations
 // ------------------------------------------------
 
-bool LittleFSLocalStorage::exists(const String &path)
+bool LittleFSFileSystem::exists(const String &path)
 {
     return LittleFS.exists(path);
 }
@@ -110,17 +110,17 @@ bool LittleFSLocalStorage::exists(const String &path)
 // Directory Operations
 // ------------------------------------------------
 
-Dir LittleFSLocalStorage::openDir(const String &path)
+Dir LittleFSFileSystem::openDir(const String &path)
 {
     return LittleFS.openDir(path);
 }
 
-bool LittleFSLocalStorage::mkdir(const String &path)
+bool LittleFSFileSystem::mkdir(const String &path)
 {
     return LittleFS.mkdir(path);
 }
 
-bool LittleFSLocalStorage::rmdir(const String &path)
+bool LittleFSFileSystem::rmdir(const String &path)
 {
     // remove files in the directory, and remove directories recursively
     Dir dir = openDir(path);
@@ -153,7 +153,7 @@ bool LittleFSLocalStorage::rmdir(const String &path)
     return success;
 }
 
-bool LittleFSLocalStorage::copyDir(const String &source, const String &dest)
+bool LittleFSFileSystem::copyDir(const String &source, const String &dest)
 {
     if (validDir(source))
     {
@@ -183,12 +183,12 @@ bool LittleFSLocalStorage::copyDir(const String &source, const String &dest)
     return false;
 }
 
-bool LittleFSLocalStorage::moveDir(const String &source, const String &dest)
+bool LittleFSFileSystem::moveDir(const String &source, const String &dest)
 {
     return copyDir(source, dest) && rmdir(source);
 }
 
-String LittleFSLocalStorage::lsString(const String &path)
+String LittleFSFileSystem::lsString(const String &path)
 {
     String output = "";
     Dir dir = openDir(path);
