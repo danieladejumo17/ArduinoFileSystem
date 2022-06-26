@@ -9,14 +9,6 @@ class LittleFSLocalStorage{
         bool _FSReady;
         static const int _writeDelay = 100;
 
-        // bool validDir(Dir &dir)
-        // {
-        //     dir.rewind();
-        //     bool isDir = dir.next();
-        //     dir.rewind();
-        //     return isDir;
-        // }
-
         bool validDir(const String &path)
         {
             File file = LittleFS.open(path.c_str(), "r");
@@ -82,6 +74,7 @@ class LittleFSLocalStorage{
          * creates a copy of `source` in `dest`. Returns true if operation succeeds.
          * */
         bool copyFile(const String&, const String&);
+        bool moveFile(const String &source, const String &dest) { return rename(source, dest); }
 
 
         // ------------------------------------------------
@@ -111,7 +104,6 @@ class LittleFSLocalStorage{
          * */
         bool mkdir(const String&);
 
-        // TODO: Implement from here downwards
         /**
          * rmdir(path)
          * removes the specified directory. Returns true if operation succeeds.
@@ -129,24 +121,16 @@ class LittleFSLocalStorage{
          * moves `source` to `dest`. Returns true if operation succeeds.
          * */
         bool moveDir(const String&, const String&);
-
-        /**
-         * ls(path)
-         * returns a list of files and directories in the specified directory as char**
-         * */
-        char** ls(const String&); //path to directory. Should directories end with a /??
-        
-        /**
-         * lsStringArray(path)
-         * returns a list of files and directories in the specified directory as String[]
-         * */
-        String* lsStringArray(const String &path);
         
         /**
          * lsString(path)
          * returns a list of files and directories in the specified directory as a tab separated String
          * */
         String lsString(const String &path);
+
+
+        // bool emptyDir(const String &path);
+        // bool lenDir(const String &path);
 };
 
 static LittleFSLocalStorage localStorage{};

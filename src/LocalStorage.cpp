@@ -122,10 +122,36 @@ bool LittleFSLocalStorage::mkdir(const String &path)
 
 bool LittleFSLocalStorage::rmdir(const String &path)
 {
-    return LittleFS.rmdir(path);
-}
+    // remove files in the directory, and remove directories recursively
+    Dir dir = openDir(path);
+    bool success = true;
 
-// ------------------------------------------------
+    while (dir.next())
+    {
+        if (dir.isDirectory())
+        {
+            success = success && rmdir(path + "/" + dir.fileName());
+        }
+        else
+        {
+            success = success && remove(path + "/" + dir.fileName());
+        }
+
+        if (!success)
+        {
+            break;
+        }
+    }
+
+    // when the last file in a subdirectory is removed the subdirectory itself is automatically deleted
+    // however in the case where the folder contains no file initially
+    if(exists(path))
+    {
+        success = success && LittleFS.rmdir(path);
+    }
+
+    return success;
+}
 
 bool LittleFSLocalStorage::copyDir(const String &source, const String &dest)
 {
@@ -162,68 +188,13 @@ bool LittleFSLocalStorage::moveDir(const String &source, const String &dest)
     return copyDir(source, dest) && rmdir(source);
 }
 
-char** LittleFSLocalStorage::ls(const String &path)
-{
-    if (validDir(path))
-    {
-        Dir dir = openDir(path);
-
-        int i = 0;
-        while (dir.next())
-        {
-            i++;
-        }
-        char** files = new char*[i];
-        i = 0;
-        dir.rewind();
-
-        while (dir.next())
-        {
-            files[i] = new char[dir.fileName().length() + 1];
-            strcpy(files[i], dir.fileName().c_str());
-            i++;
-        }
-        // dir.close();
-        return files;
-    }
-    return nullptr;
-}
-
-String* LittleFSLocalStorage::lsStringArray(const String &path)
-{
-    char** files = ls(path);
-
-    if (files)
-    {
-        int i = 0;
-        while (files[i])
-        {
-            i++;
-        }
-        String* strings = new String[i];
-        for (int j = 0; j < i; j++)
-        {
-            strings[j] = files[j];
-        }
-        return strings;
-    }
-    return nullptr;
-}
-
 String LittleFSLocalStorage::lsString(const String &path)
 {
-    String files = "";
-    char** filesArray = ls(path);
-    if (filesArray)
+    String output = "";
+    Dir dir = openDir(path);
+    while (dir.next())
     {
-        int i = 0;
-        while (filesArray[i])
-        {
-            files += filesArray[i];
-            files += "\n";
-            i++;
-        }
-        return files;
+        output += dir.fileName() + "\n";
     }
-    return "";
+    return output;
 }
