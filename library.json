@@ -1,10 +1,10 @@
 {
-  "name": "ArduinoLocalStorage",
+  "name": "ArduinoFileSystem",
   "version": "1.0.0",
-  "description": "A Local Storage API for LittleFS and other files storage systems",
+  "description": "A File System API for LittleFS and other files storage systems",
   "repository": {
     "type": "git",
-    "url": "https://github.com/danieladejumo17/ArduinoLocalStorage"
+    "url": "https://github.com/danieladejumo17/ArduinoFileSystem"
   },
   "authors": [
     {
@@ -15,7 +15,7 @@
     }
   ],
   "license": "BSD-3-Clause",
-  "homepage": "https://github.com/janelia-arduino/Vector",
+  "homepage": "https://github.com/danieladejumo17/ArduinoFileSystem",
   "frameworks": "*",
   "platforms": "*"
 }
