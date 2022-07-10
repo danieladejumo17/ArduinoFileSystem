@@ -12,7 +12,7 @@
 class LittleFSFileSystem{
     private:
         bool _FSReady;
-        static const int _writeDelay = 100;
+        static const int _writeDelay = 100; //TODO: Why a delay?
 
         bool validDir(const String &path)
         {

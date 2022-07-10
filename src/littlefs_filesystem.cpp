@@ -1,5 +1,5 @@
 #include "littlefs_filesystem.h"
-#include "utilities.h"
+#include "arduino_utilities.h"
 
 // TODO: IGNORE ALL OTHER FILE OPERATIONS IF !_FSReady
 LittleFSFileSystem::LittleFSFileSystem() : _FSReady{false}
